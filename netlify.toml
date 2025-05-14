@@ -20,5 +20,5 @@ commands = [
   "flutter precache web",
   "flutter pub get",
 
-  "flutter build web --release --dart-define=BACKEND_URL=$BACKEND_URL"
+  "flutter build web --release --dart-define=API_BASE_URL=$API_BASE_URL"
 ]
