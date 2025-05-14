@@ -1,24 +1,19 @@
 [build]
-
+  # Change into your Flutter frontend folder
   base    = "frontend"
-
-  command = "bash netlify-build.sh"
-
+  # After building, serve these static files
   publish = "build/web"
+  # Inline all the build commands in order
+  command = '''
+# 1) Download & extract Flutter SDK
+curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.13.6-stable.tar.xz
+tar xf flutter_linux_3.13.6-stable.tar.xz
+export PATH=$PWD/flutter/bin:$PATH
 
+# 2) Precache web artifacts & fetch packages
+flutter precache web
+flutter pub get
 
-[[plugins]]
-package = "@netlify/plugin-run"
-
-[plugins.inputs]
-commands = [
-
-  "curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.13.6-stable.tar.xz",
-  "tar xf flutter_linux_3.13.6-stable.tar.xz",
-  "export PATH=$PWD/flutter/bin:$PATH",
-
-  "flutter precache web",
-  "flutter pub get",
-
-  "flutter build web --release --dart-define=API_BASE_URL=$API_BASE_URL"
-]
+# 3) Build release with your API base URL from Netlify env
+flutter build web --release --dart-define=API_BASE_URL=$API_BASE_URL
+'''
