@@ -1,0 +1,24 @@
+[build]
+
+  base    = "frontend"
+
+  command = "bash netlify-build.sh"
+
+  publish = "build/web"
+
+
+[[plugins]]
+package = "@netlify/plugin-run"
+
+[plugins.inputs]
+commands = [
+
+  "curl -LO https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.13.6-stable.tar.xz",
+  "tar xf flutter_linux_3.13.6-stable.tar.xz",
+  "export PATH=$PWD/flutter/bin:$PATH",
+
+  "flutter precache web",
+  "flutter pub get",
+
+  "flutter build web --release --dart-define=BACKEND_URL=$BACKEND_URL"
+]
